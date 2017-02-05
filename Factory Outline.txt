@@ -1,0 +1,65 @@
+Sample files included are in Factory_Simulation_using_C++/Debug (item.dat, order.dat, task.dat)
+Once the data has been read, the data can be parsed, visualized by generating graphviz graphs, and checked for integrity. 
+Specifically the integrity check verified:
+1.	All tasks referenced in the task data (passed/failed) and item data (installer/remover) exist.
+2.	There are no task or item data duplicate entries.
+3.	All items ordered by a customer exist.
+Build a factory that can assemble each product as ordered.
+Minimal viable factory simulation.
+A job assembled in a factory moving from machine to machine, or work station to workstation, is an example of network job flow.
+A job is created from an order.  An order consists of a list of items to be installed.
+A job advances through the network.
+The task data is a graph of the network of how jobs flow through the factory.  The nodes are the set of tasks, machines, robots, or work stations which perform a task as part of the assembly of the product.  The edges are node pairs which define how a job flows from one task to another.  Each edge is directed.  It has a source and a destination.  The job flows along an edge from the source node to the designation node.  Each node (source) possibly performs some work on the job and forwards it along the graph to the next (destination) node.
+The job flows through the factory from node to node, starting at the graph source node.  
+Recall a source node is a node that is never the destination node for an edge. All edges for a source node exit the node.
+A job exits the system when it reaches a sink node.  A sink node does not have eny edges leaving the node.  It cannot leave.
+Factory outline
+
+1. Factory consisting of a network of machines, one machine per task.
+   A machine has an input job queue which is a queue of jobs waiting to be
+   processed by the machine.
+   The item data file entries state whether a machine is an installer or remover.
+
+ 2. Find 'source' node for the machine network.
+
+ 3. Each order is a job. A job has a data element that flags whether an item has
+    been installed.
+    Load all the orders into the input queue for the 'source' node.
+
+ 4. Loop: over all machines
+
+    5. If the input queue for the machine is not empty
+
+       6. Remove the job from the input queue
+
+       7.  Is this a sink node machine?
+
+           8. Mark job completed, ship it
+              goto 18
+
+       9.  If the machine is a installer and the job needs this item
+
+           10. Install item
+
+       11. If this machine is a remover and the job has the item installed
+
+           12. Remove item
+               goto 18
+
+       13. Inspector
+
+       14. If the machine has only a 'passed'
+  
+           15.   Move the job to the passed machine input queue
+
+       16. The machine has both a 'passed' and 'failed'
+
+           Flip a coin: calculate a random number to 'inspect' the job.
+           If the inspection failed
+
+               17.   Move the job to the failed machine input queue
+
+           If the inspection passed
+
+               goto 15
+ 18. End loop

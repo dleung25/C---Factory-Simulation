@@ -1,0 +1,6 @@
+Power Supply | 4 | Motherboard | Remove Power Supply
+Motherboard | 1 | CPU
+CPU | 1 | Approve | Remove CPU
+Remove CPU
+Remove Power Supply
+Approve
